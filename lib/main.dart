@@ -3,6 +3,7 @@ import 'package:certify_frontend/components/topbar.dart';
 import 'package:certify_frontend/home.dart';
 import 'package:certify_frontend/settings.dart';
 import 'package:certify_frontend/states/api_settings.dart';
+import 'package:certify_frontend/states/dashboard_state.dart';
 import 'package:certify_frontend/states/page_state.dart';
 import 'package:flutter/material.dart';
 import 'app_theme.dart';
@@ -17,6 +18,12 @@ void main() {
         ),
         ChangeNotifierProvider<ApiSettings>(
           create: (_) => ApiSettings(),
+        ),
+        ChangeNotifierProvider<LeftPaneState>(
+          create: (_) => LeftPaneState(),
+        ),
+        ChangeNotifierProvider<RightPaneState>(
+          create: (_) => RightPaneState(),
         )
       ],
       child: const MyApp(),

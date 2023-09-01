@@ -1,4 +1,8 @@
+import 'package:certify_frontend/app_theme.dart';
+import 'package:certify_frontend/dashboard/lpane_events.dart';
+import 'package:certify_frontend/states/dashboard_state.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -6,20 +10,39 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: APISettings(),
-    );
-  }
-}
+      child: Row(
+        children: [
+          Expanded(
+              child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 8, 0),
+            child: Consumer<LeftPaneState>(
+              builder: (context, pageState, _) {
+                // Render the current page based on the state
+                switch (pageState.currentPageIndex) {
+                  case 0:
+                    return EventsPane();
+                  case 1:
+                  // return SettingsPage();
+                  // Add cases for other pages
+                  default:
+                    return Container();
+                }
+              },
+            ),
+          )),
+          Expanded(
+              child: Padding(
+            padding: const EdgeInsets.fromLTRB(8, 0, 16, 0),
+            child:
 
-class APISettings extends StatelessWidget {
-  const APISettings({super.key});
+                // right pane handling switch case builder logic
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 200,
-      width: 300,
-      child: Column(children: [Text("Home Page")]),
+                Container(
+              color: AppTheme.green,
+            ),
+          ))
+        ],
+      ),
     );
   }
 }

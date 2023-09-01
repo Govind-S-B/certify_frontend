@@ -105,7 +105,11 @@ class CustomSideBar extends StatelessWidget {
                 SizedBox(
                   height: 30,
                 ),
-                Text("made with ♡ by"),
+                Text(
+                  "made with ♡ by",
+                  style: TextStyles.body().copyWith(
+                      color: AppTheme.grey4, fontWeight: FontWeight.w600),
+                ),
                 Row(
                   children: [
                     Padding(
