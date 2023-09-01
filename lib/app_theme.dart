@@ -17,6 +17,7 @@ class AppTheme {
   static final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
     primaryColor: green,
+    primarySwatch: Colors.grey,
     fontFamily: 'Inter',
     scaffoldBackgroundColor: pBlack,
   );
