@@ -1,8 +1,10 @@
 import 'package:certify_frontend/app_theme.dart';
+import 'package:certify_frontend/components/button.dart';
 import 'package:certify_frontend/components/dash.dart';
+import 'package:certify_frontend/components/not_finalized.dart';
 import 'package:flutter/material.dart';
 
-class EventTile extends StatelessWidget {
+class EventTile extends StatefulWidget {
   final String id;
   final String name;
   final String? issueDt;
@@ -15,21 +17,82 @@ class EventTile extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  _EventTileState createState() => _EventTileState();
+}
+
+class _EventTileState extends State<EventTile> {
+  Color containerColor = AppTheme.grey2;
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-        child: Row(children: [
-          Expanded(flex: 1, child: Text(id)),
-          Expanded(
-            flex: 5,
-            child: Text(name),
+    return MouseRegion(
+      onEnter: (_) {
+        setState(() {
+          containerColor = AppTheme.grey4;
+        });
+      },
+      onExit: (_) {
+        setState(() {
+          containerColor = AppTheme.grey2;
+        });
+      },
+      child: GestureDetector(
+        onTap: () {
+          print("tapped");
+        },
+        child: Container(
+          height: 50,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            color: containerColor,
           ),
-          Expanded(
-            flex: 1,
-            child: Text(issueDt.toString()),
+          child: Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    widget.id,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyles.body().copyWith(
+                      color: AppTheme.white,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 10,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    widget.name,
+                    style: TextStyles.body().copyWith(
+                      color: AppTheme.white,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: widget.issueDt == null
+                      ? NotFinalizedWidget()
+                      : Text(
+                          widget.issueDt.toString(),
+                          style: TextStyles.body().copyWith(
+                            color: AppTheme.white,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                ),
+              ),
+            ],
           ),
-        ]),
+        ),
       ),
     );
   }
@@ -92,15 +155,25 @@ class EventsPane extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   child: Row(children: [
-                    Expanded(flex: 1, child: Text("Id")),
+                    Expanded(
+                        flex: 1,
+                        child: Text("Id",
+                            style: TextStyles.body().copyWith(
+                                color: AppTheme.white,
+                                fontWeight: FontWeight.w500))),
                     Expanded(
                       flex: 5,
-                      child: Text("Name"),
+                      child: Text("Name",
+                          style: TextStyles.body().copyWith(
+                              color: AppTheme.white,
+                              fontWeight: FontWeight.w500)),
                     ),
                     Expanded(
-                      flex: 1,
-                      child: Text("Issue Date"),
-                    ),
+                        flex: 1,
+                        child: Text("Issue Date",
+                            style: TextStyles.body().copyWith(
+                                color: AppTheme.white,
+                                fontWeight: FontWeight.w500))),
                   ]),
                 ),
                 Padding(
@@ -112,17 +185,60 @@ class EventsPane extends StatelessWidget {
                         shrinkWrap: true,
                         itemCount: 10,
                         itemBuilder: (BuildContext context, int index) {
-                          return EventTile(
-                            id: temp_list[index]["_id"]!,
-                            name: temp_list[index]["name"]!,
-                            issueDt: temp_list[index]["issueDt"],
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: EventTile(
+                              id: temp_list[index]["_id"]!,
+                              name: temp_list[index]["name"]!,
+                              issueDt: temp_list[index]["issueDt"],
+                            ),
                           );
                         })),
+                Row(
+                  children: [
+                    Spacer(),
+                    CustomIconButton(
+                        iconData: Icons.keyboard_double_arrow_left_rounded,
+                        onPressed: () {}),
+                    CustomIconButton(
+                        iconData: Icons.keyboard_arrow_left_rounded,
+                        onPressed: () {}),
+                    SizedBox(
+                      height: 35,
+                      child: ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                AppTheme.pBlack),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                            padding: MaterialStateProperty.all<EdgeInsets>(
+                                EdgeInsets.zero), // Remove default padding
+                          ),
+                          onPressed: () {},
+                          child: Text(
+                            "1/10",
+                            style: TextStyles.body().copyWith(
+                                color: AppTheme.white,
+                                fontWeight: FontWeight.w500),
+                          )),
+                    ),
+                    CustomIconButton(
+                        iconData: Icons.keyboard_arrow_right_rounded,
+                        onPressed: () {}),
+                    CustomIconButton(
+                        iconData: Icons.keyboard_double_arrow_right_rounded,
+                        onPressed: () {}),
+                  ],
+                )
                 // list of events from json response to be rendered
               ]),
             ),
           ),
-        )
+        ),
       ],
     );
   }
