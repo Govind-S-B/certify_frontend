@@ -11,7 +11,7 @@ class NotFinalizedWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
         color: AppTheme.darkYellow,
       ),
-      width: 50,
+      width: 125,
       height: 25,
       child: Center(
         child: Text(

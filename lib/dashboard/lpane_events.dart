@@ -1,6 +1,7 @@
 import 'package:certify_frontend/app_theme.dart';
 import 'package:certify_frontend/components/button.dart';
 import 'package:certify_frontend/components/dash.dart';
+import 'package:certify_frontend/components/filterbtn.dart';
 import 'package:certify_frontend/components/not_finalized.dart';
 import 'package:flutter/material.dart';
 
@@ -77,17 +78,19 @@ class _EventTileState extends State<EventTile> {
               ),
               Expanded(
                 flex: 3,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: widget.issueDt == null
-                      ? NotFinalizedWidget()
-                      : Text(
-                          widget.issueDt.toString(),
-                          style: TextStyles.body().copyWith(
-                            color: AppTheme.white,
-                            fontWeight: FontWeight.w500,
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: widget.issueDt == null
+                        ? NotFinalizedWidget()
+                        : Text(
+                            widget.issueDt.toString(),
+                            style: TextStyles.body().copyWith(
+                              color: AppTheme.white,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
-                        ),
+                  ),
                 ),
               ),
             ],
@@ -104,16 +107,40 @@ class EventsPane extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var temp_list = [
+      {
+        "_id": "64f1f062b2ec1ad97d69486f",
+        "name": "Event 1",
+        "issueDt": "18-08-2022"
+      },
+      {"_id": "64f1f062b2ec1ad97d69486f", "name": "Event 1", "issueDt": null},
+      {
+        "_id": "64f1f062b2ec1ad97d69486f",
+        "name": "Event 1",
+        "issueDt": "27-11-2022"
+      },
+      {
+        "_id": "64f1f062b2ec1ad97d69486f",
+        "name": "Event 1",
+        "issueDt": "18-08-2022"
+      },
+      {"_id": "64f1f062b2ec1ad97d69486f", "name": "Event 1", "issueDt": null},
+      {
+        "_id": "64f1f062b2ec1ad97d69486f",
+        "name": "Event 1",
+        "issueDt": "27-11-2022"
+      },
       {"_id": "64f1f062b2ec1ad97d69486f", "name": "Event 1", "issueDt": null},
       {"_id": "64f1f062b2ec1ad97d69486f", "name": "Event 1", "issueDt": null},
-      {"_id": "64f1f062b2ec1ad97d69486f", "name": "Event 1", "issueDt": null},
-      {"_id": "64f1f062b2ec1ad97d69486f", "name": "Event 1", "issueDt": null},
-      {"_id": "64f1f062b2ec1ad97d69486f", "name": "Event 1", "issueDt": null},
-      {"_id": "64f1f062b2ec1ad97d69486f", "name": "Event 1", "issueDt": null},
-      {"_id": "64f1f062b2ec1ad97d69486f", "name": "Event 1", "issueDt": null},
-      {"_id": "64f1f062b2ec1ad97d69486f", "name": "Event 1", "issueDt": null},
-      {"_id": "64f1f062b2ec1ad97d69486f", "name": "Event 1", "issueDt": null},
-      {"_id": "64f1f062b2ec1ad97d69486f", "name": "Event 1", "issueDt": null},
+      {
+        "_id": "64f1f062b2ec1ad97d69486f",
+        "name": "Event 1",
+        "issueDt": "27-11-2022"
+      },
+      {
+        "_id": "64f1f062b2ec1ad97d69486f",
+        "name": "Event 1",
+        "issueDt": "18-08-2022"
+      },
     ];
 
     return Column(
@@ -150,6 +177,43 @@ class EventsPane extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: Column(children: [
                 // search and filter row
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: SizedBox(
+                        height: 30,
+                        width: 200,
+                        child: TextField(
+                          decoration: InputDecoration(
+                            labelText: 'Search',
+                            filled: true,
+                            fillColor: AppTheme.pBlack,
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 10),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide: BorderSide.none,
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide: BorderSide.none,
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide: BorderSide.none,
+                            ),
+                            labelStyle: TextStyles.body().copyWith(
+                                color: AppTheme.grey4,
+                                fontWeight: FontWeight.w600),
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
+                          ),
+                        ),
+                      ),
+                    ),
+                    FilterButton(),
+                  ],
+                ),
                 // Id name issue date headers . Sized Box with set of expand widgets in row
                 Padding(
                   padding:
@@ -194,45 +258,64 @@ class EventsPane extends StatelessWidget {
                             ),
                           );
                         })),
-                Row(
-                  children: [
-                    Spacer(),
-                    CustomIconButton(
-                        iconData: Icons.keyboard_double_arrow_left_rounded,
-                        onPressed: () {}),
-                    CustomIconButton(
-                        iconData: Icons.keyboard_arrow_left_rounded,
-                        onPressed: () {}),
-                    SizedBox(
-                      height: 35,
-                      child: ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                AppTheme.pBlack),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Spacer(),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                        child: CustomIconButton(
+                            iconData: Icons.keyboard_double_arrow_left_rounded,
+                            onPressed: () {}),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                        child: CustomIconButton(
+                            iconData: Icons.keyboard_arrow_left_rounded,
+                            onPressed: () {}),
+                      ),
+                      SizedBox(
+                        height: 35,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                          child: ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        AppTheme.pBlack),
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                ),
+                                padding: MaterialStateProperty.all<EdgeInsets>(
+                                    EdgeInsets.zero), // Remove default padding
                               ),
-                            ),
-                            padding: MaterialStateProperty.all<EdgeInsets>(
-                                EdgeInsets.zero), // Remove default padding
-                          ),
-                          onPressed: () {},
-                          child: Text(
-                            "1/10",
-                            style: TextStyles.body().copyWith(
-                                color: AppTheme.white,
-                                fontWeight: FontWeight.w500),
-                          )),
-                    ),
-                    CustomIconButton(
-                        iconData: Icons.keyboard_arrow_right_rounded,
-                        onPressed: () {}),
-                    CustomIconButton(
-                        iconData: Icons.keyboard_double_arrow_right_rounded,
-                        onPressed: () {}),
-                  ],
+                              onPressed: () {},
+                              child: Text(
+                                "1/10",
+                                style: TextStyles.body().copyWith(
+                                    color: AppTheme.white,
+                                    fontWeight: FontWeight.w500),
+                              )),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                        child: CustomIconButton(
+                            iconData: Icons.keyboard_arrow_right_rounded,
+                            onPressed: () {}),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: CustomIconButton(
+                            iconData: Icons.keyboard_double_arrow_right_rounded,
+                            onPressed: () {}),
+                      ),
+                    ],
+                  ),
                 )
                 // list of events from json response to be rendered
               ]),
