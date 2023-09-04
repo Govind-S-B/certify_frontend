@@ -3,7 +3,9 @@ import 'package:certify_frontend/components/button.dart';
 import 'package:certify_frontend/components/dash.dart';
 import 'package:certify_frontend/components/filterbtn.dart';
 import 'package:certify_frontend/components/not_finalized.dart';
+import 'package:certify_frontend/components/snackbars.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class EventTile extends StatefulWidget {
   final String id;
@@ -23,6 +25,8 @@ class EventTile extends StatefulWidget {
 
 class _EventTileState extends State<EventTile> {
   Color containerColor = AppTheme.grey2;
+  Color copyTextColor = AppTheme.white;
+  bool hover = false;
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +34,15 @@ class _EventTileState extends State<EventTile> {
       onEnter: (_) {
         setState(() {
           containerColor = AppTheme.grey4;
+          copyTextColor = AppTheme.violet;
+          hover = true;
         });
       },
       onExit: (_) {
         setState(() {
           containerColor = AppTheme.grey2;
+          copyTextColor = AppTheme.white;
+          hover = false;
         });
       },
       child: GestureDetector(
@@ -53,12 +61,34 @@ class _EventTileState extends State<EventTile> {
                 flex: 2,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    widget.id,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyles.body().copyWith(
-                      color: AppTheme.white,
-                      fontWeight: FontWeight.w500,
+                  child: GestureDetector(
+                    onTap: () {
+                      Clipboard.setData(ClipboardData(text: widget.id));
+                      CustomSnackbar.green(context, "Copied to Clipboard");
+                    },
+                    child: Row(
+                      children: [
+                        hover
+                            ? Icon(
+                                Icons.copy,
+                                color: copyTextColor,
+                                size: 15,
+                              )
+                            : Container(),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Expanded(
+                          child: Text(
+                            widget.id,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyles.body().copyWith(
+                              color: copyTextColor,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -245,6 +275,7 @@ class EventsPane extends StatelessWidget {
                   child: MySeparator(color: AppTheme.grey4),
                 ),
                 Expanded(
+                    // This needs to be the consumer for querying
                     child: ListView.builder(
                         shrinkWrap: true,
                         itemCount: 10,
@@ -317,7 +348,6 @@ class EventsPane extends StatelessWidget {
                     ],
                   ),
                 )
-                // list of events from json response to be rendered
               ]),
             ),
           ),
