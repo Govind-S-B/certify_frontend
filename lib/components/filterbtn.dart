@@ -19,7 +19,7 @@ class _FilterButtonState extends State<FilterButton> {
         } else {
           final RenderBox button = context.findRenderObject() as RenderBox;
           final RenderBox overlay =
-              Overlay.of(context)!.context.findRenderObject() as RenderBox;
+              Overlay.of(context).context.findRenderObject() as RenderBox;
           final RelativeRect position = RelativeRect.fromRect(
             Rect.fromPoints(
               button.localToGlobal(Offset.zero, ancestor: overlay),
@@ -29,7 +29,7 @@ class _FilterButtonState extends State<FilterButton> {
             Offset.zero & overlay.size,
           );
           overlayEntry = _createOverlayEntry(position);
-          Overlay.of(context)!.insert(overlayEntry!);
+          Overlay.of(context).insert(overlayEntry!);
         }
       },
       child: Container(

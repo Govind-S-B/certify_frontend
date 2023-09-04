@@ -1,4 +1,5 @@
 import 'package:certify_frontend/app_theme.dart';
+import 'package:certify_frontend/components/snackbars.dart';
 import 'package:certify_frontend/states/api_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -140,9 +141,8 @@ class ApiSettingsSection extends StatelessWidget {
                       var _serverAddress = serverAddressController.text;
                       var _authKey = authKeyController.text;
                       apiSettings.saveValues(_serverAddress, _authKey);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Values saved locally')),
-                      );
+                      CustomSnackbar.green(context, "API Settings Saved");
+                      //"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s");
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme
