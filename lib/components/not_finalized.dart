@@ -14,10 +14,15 @@ class NotFinalizedWidget extends StatelessWidget {
       width: 125,
       height: 25,
       child: Center(
-        child: Text(
-          "Not Finalized",
-          style: TextStyles.body()
-              .copyWith(color: AppTheme.yellow, fontWeight: FontWeight.w600),
+        child: Padding(
+          padding: const EdgeInsets.all(2.0),
+          child: Text(
+            "Not Finalized",
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+            style: TextStyles.body()
+                .copyWith(color: AppTheme.yellow, fontWeight: FontWeight.w600)
+          ),
         ),
       ),
     );
