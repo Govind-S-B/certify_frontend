@@ -12,6 +12,8 @@ class ApiSettings extends ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _serverAddress = prefs.getString('serverAddress') ?? '';
     _authKey = prefs.getString('authKey') ?? '';
+
+    notifyListeners();
   }
 
   void saveValues(inputServerAddress, inputAuthKey) async {

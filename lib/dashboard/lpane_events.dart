@@ -4,8 +4,10 @@ import 'package:certify_frontend/components/dash.dart';
 import 'package:certify_frontend/components/filterbtn.dart';
 import 'package:certify_frontend/components/not_finalized.dart';
 import 'package:certify_frontend/components/snackbars.dart';
+import 'package:certify_frontend/states/events_pane_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class EventTile extends StatefulWidget {
   final String id;
@@ -136,42 +138,7 @@ class EventsPane extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var temp_list = [
-      {
-        "_id": "64f1f062b2ec1ad97d69486f",
-        "name": "Event 1",
-        "issueDt": "18-08-2022"
-      },
-      {"_id": "64f1f062b2ec1ad97d69486f", "name": "Event 1", "issueDt": null},
-      {
-        "_id": "64f1f062b2ec1ad97d69486f",
-        "name": "Event 1",
-        "issueDt": "27-11-2022"
-      },
-      {
-        "_id": "64f1f062b2ec1ad97d69486f",
-        "name": "Event 1",
-        "issueDt": "18-08-2022"
-      },
-      {"_id": "64f1f062b2ec1ad97d69486f", "name": "Event 1", "issueDt": null},
-      {
-        "_id": "64f1f062b2ec1ad97d69486f",
-        "name": "Event 1",
-        "issueDt": "27-11-2022"
-      },
-      {"_id": "64f1f062b2ec1ad97d69486f", "name": "Event 1", "issueDt": null},
-      {"_id": "64f1f062b2ec1ad97d69486f", "name": "Event 1", "issueDt": null},
-      {
-        "_id": "64f1f062b2ec1ad97d69486f",
-        "name": "Event 1",
-        "issueDt": "27-11-2022"
-      },
-      {
-        "_id": "64f1f062b2ec1ad97d69486f",
-        "name": "Event 1",
-        "issueDt": "18-08-2022"
-      },
-    ];
+    Provider.of<EventsPaneState>(context, listen: false).fetchData(context);
 
     return Column(
       children: [
@@ -276,19 +243,23 @@ class EventsPane extends StatelessWidget {
                 ),
                 Expanded(
                     // This needs to be the consumer for querying
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: 10,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: EventTile(
-                              id: temp_list[index]["_id"]!,
-                              name: temp_list[index]["name"]!,
-                              issueDt: temp_list[index]["issueDt"],
-                            ),
-                          );
-                        })),
+                    child: Consumer<EventsPaneState>(
+                        builder: (context, eventpanestate, _) {
+                  return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: eventpanestate.jsonResponse.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: EventTile(
+                            id: eventpanestate.jsonResponse[index]["_id"]!,
+                            name: eventpanestate.jsonResponse[index]["name"]!,
+                            issueDt: eventpanestate.jsonResponse[index]
+                                ["issueDt"],
+                          ),
+                        );
+                      });
+                })),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(

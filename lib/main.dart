@@ -4,6 +4,7 @@ import 'package:certify_frontend/home.dart';
 import 'package:certify_frontend/settings.dart';
 import 'package:certify_frontend/states/api_settings.dart';
 import 'package:certify_frontend/states/dashboard_state.dart';
+import 'package:certify_frontend/states/events_pane_state.dart';
 import 'package:certify_frontend/states/page_state.dart';
 import 'package:flutter/material.dart';
 import 'app_theme.dart';
@@ -24,6 +25,9 @@ void main() {
         ),
         ChangeNotifierProvider<RightPaneState>(
           create: (_) => RightPaneState(),
+        ),
+        ChangeNotifierProvider<EventsPaneState>(
+          create: (_) => EventsPaneState(),
         )
       ],
       child: const MyApp(),
@@ -36,7 +40,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ApiSettings apiSettings = Provider.of<ApiSettings>(context);
+    ApiSettings apiSettings = Provider.of<ApiSettings>(context, listen: false);
     apiSettings.loadSavedValues();
 
     return MaterialApp(
