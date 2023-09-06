@@ -17,10 +17,10 @@ class EventsPaneState extends ChangeNotifier {
 
   Future<void> fetchData(context) async {
     final url = Uri.parse("https://" +
-        Provider.of<ApiSettings>(context, listen: false).serverAddress +
+        Provider.of<ApiSettings>(context, listen: true).serverAddress +
         "/event/list");
     final headers = {
-      'API-Auth-Key': Provider.of<ApiSettings>(context, listen: false).authKey
+      'API-Auth-Key': Provider.of<ApiSettings>(context, listen: true).authKey
     };
 
     final response = await http.get(url, headers: headers);
@@ -32,7 +32,6 @@ class EventsPaneState extends ChangeNotifier {
       print(response.body);
       _jsonResponse = json.decode(response.body) as List;
       // Process the JSON data as needed
-      print(_jsonResponse);
     } else {
       // Request failed, handle the error
       _jsonResponse = [];
