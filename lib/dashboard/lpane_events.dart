@@ -205,6 +205,10 @@ class EventsPane extends StatelessWidget {
                                 fontWeight: FontWeight.w600),
                             floatingLabelBehavior: FloatingLabelBehavior.never,
                           ),
+                          onSubmitted: (value) {
+                            Provider.of<EventsPaneState>(context, listen: false)
+                                .searchEvents(context, value);
+                          },
                         ),
                       ),
                     ),

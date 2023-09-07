@@ -9,6 +9,8 @@ import 'package:provider/provider.dart';
 class EventsPaneState extends ChangeNotifier {
   var _jsonResponse = [];
 
+  Map<String, dynamic> queryparams = {};
+
   int _currentPageIndex = 0;
   int maxPageIndex = 0;
 
@@ -16,12 +18,14 @@ class EventsPaneState extends ChangeNotifier {
   List get jsonResponse => _jsonResponse;
 
   Future<void> fetchData(context) async {
-    final url = Uri.parse("https://" +
-        Provider.of<ApiSettings>(context, listen: true).serverAddress +
+    var url = Uri.parse("https://" +
+        Provider.of<ApiSettings>(context, listen: false).serverAddress +
         "/event/list");
     final headers = {
-      'API-Auth-Key': Provider.of<ApiSettings>(context, listen: true).authKey
+      'API-Auth-Key': Provider.of<ApiSettings>(context, listen: false).authKey
     };
+
+    url = url.replace(queryParameters: queryparams);
 
     final response = await http.get(url, headers: headers);
 
@@ -39,6 +43,20 @@ class EventsPaneState extends ChangeNotifier {
     }
 
     notifyListeners();
+  }
+
+  void searchEvents(context, searchterm) {
+    if (searchterm.isNotEmpty) {
+      print("add search arg");
+      queryparams['search'] = searchterm;
+      _currentPageIndex = 0;
+    } else {
+      print("remove search arg");
+      queryparams.remove('search');
+      _currentPageIndex = 0;
+    }
+
+    fetchData(context);
   }
 
   void NextPage() {
