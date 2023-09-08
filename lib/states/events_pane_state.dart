@@ -9,13 +9,14 @@ import 'package:provider/provider.dart';
 class EventsPaneState extends ChangeNotifier {
   var _jsonResponse = [];
 
-  Map<String, dynamic> queryparams = {};
+  Map<String, dynamic> _queryparams = {};
 
   int _currentPageIndex = 0;
   int maxPageIndex = 0;
 
   int get currentPageIndex => _currentPageIndex;
   List get jsonResponse => _jsonResponse;
+  get queryparams => _queryparams;
 
   Future<void> fetchData(context) async {
     var url = Uri.parse("https://" +
@@ -25,7 +26,7 @@ class EventsPaneState extends ChangeNotifier {
       'API-Auth-Key': Provider.of<ApiSettings>(context, listen: false).authKey
     };
 
-    url = url.replace(queryParameters: queryparams);
+    url = url.replace(queryParameters: _queryparams);
 
     final response = await http.get(url, headers: headers);
 
@@ -47,12 +48,23 @@ class EventsPaneState extends ChangeNotifier {
 
   void searchEvents(context, searchterm) {
     if (searchterm.isNotEmpty) {
-      print("add search arg");
-      queryparams['search'] = searchterm;
+      _queryparams['search'] = searchterm;
       _currentPageIndex = 0;
     } else {
-      print("remove search arg");
-      queryparams.remove('search');
+      _queryparams.remove('search');
+      _currentPageIndex = 0;
+    }
+
+    fetchData(context);
+  }
+
+  void notFinalizedFilterModify(context) {
+    if (!_queryparams.containsKey("not_finalized")) {
+      // checks if it does not contain it
+      _queryparams['not_finalized'] = "true";
+      _currentPageIndex = 0;
+    } else {
+      _queryparams.remove('not_finalized');
       _currentPageIndex = 0;
     }
 

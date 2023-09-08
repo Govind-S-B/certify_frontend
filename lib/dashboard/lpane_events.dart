@@ -116,7 +116,7 @@ class _EventTileState extends State<EventTile> {
                     child: widget.issueDt == null
                         ? NotFinalizedWidget()
                         : Text(
-                            widget.issueDt.toString(),
+                            widget.issueDt.toString().substring(0, 10),
                             style: TextStyles.body().copyWith(
                               color: AppTheme.white,
                               fontWeight: FontWeight.w500,
@@ -212,7 +212,8 @@ class EventsPane extends StatelessWidget {
                         ),
                       ),
                     ),
-                    FilterButton(),
+                    FilterButton(
+                        Provider.of<EventsPaneState>(context, listen: false)),
                   ],
                 ),
                 // Id name issue date headers . Sized Box with set of expand widgets in row
@@ -256,11 +257,10 @@ class EventsPane extends StatelessWidget {
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: EventTile(
-                            id: eventpanestate.jsonResponse[index]["_id"]!,
-                            name: eventpanestate.jsonResponse[index]["name"]!,
-                            issueDt: eventpanestate.jsonResponse[index]
-                                ["issueDt"],
-                          ),
+                              id: eventpanestate.jsonResponse[index]["_id"]!,
+                              name: eventpanestate.jsonResponse[index]["name"]!,
+                              issueDt: eventpanestate.jsonResponse[index]
+                                  ["issueDt"]),
                         );
                       });
                 })),
